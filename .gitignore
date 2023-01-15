@@ -1,8 +1,17 @@
 ## mac
-.DS_Store
+/**/.DS_Store
 
 ## js/ts
 **/node_modules
 
 ## tdd
 /tdd/fizz-buzz/**/*.js
+
+##
+/**/gradlew
+/**/gradle/
+/**/.idea/
+/**/gradlew.bat
+/**/.gitattributes
+/**/.gradle/
+/**/app/build/
