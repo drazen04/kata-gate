@@ -5,8 +5,10 @@ This kata is based on the classic Fizz Buzz problem. The goal is to write a prog
 ## How to Run 
 - Clone this repository
 - Run `npm install` to install the dependencies
-- Run `npx vitest run` to run the tests
+- Run `npm run start` to run file with fizzbuzz execution
+- Run `npm run test` to run the tests
+- Run `npm run test-watch` to run the tests witch watcher
 
-## Resources
-- [Kata-log.rocks](https://kata-log.rocks/)
+## Resource
+- [Kata-log-ref](https://kata-log.rocks/fizz-buzz-kata)
 

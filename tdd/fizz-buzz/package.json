@@ -4,7 +4,9 @@
     "description": "tdd second experiment",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "tsc && node src/index.js",
+        "test": "npx vitest run src/fizzbuzz.test.ts",
+        "test-watch": "npx vitest watch src/fizzbuzz.test.ts",
         "dev": "tsc --watch"
     },
     "author": "",
