@@ -2,7 +2,7 @@
 .DS_Store
 
 ## js/ts
-node_module
+**/node_modules
 
 ## tdd
 /tdd/fizz-buzz/**/*.js
