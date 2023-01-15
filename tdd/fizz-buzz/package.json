@@ -1,16 +1,22 @@
 {
-  "name": "fizzbuzz",
-  "version": "1.0.0",
-  "description": "kata for tdd",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "vite": "^4.0.4",
-    "vite-node": "^0.27.0",
-    "vitest": "^0.27.0"
-  }
+    "name": "fizzbuzz-plus",
+    "version": "1.0.0",
+    "description": "tdd second experiment",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "dev": "tsc --watch"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "fp-ts": "^2.13.1",
+        "vite": "^4.0.4",
+        "vite-node": "^0.27.0",
+        "vitest": "^0.27.0"
+    },
+    "devDependencies": {
+        "@tsconfig/node16": "^1.0.3",
+        "prettier": "^2.8.2"
+    }
 }

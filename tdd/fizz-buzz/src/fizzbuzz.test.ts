@@ -1,51 +1,88 @@
 import { assert, test } from "vitest"
-import { transform } from "./fizzbuzz"
+import { trasformNumbers, trasform } from "./fizzbuzz"
 
 /**
- * 
- * [X] - 6,9 --> "Fizz"
- * [X] - 10,20 --> "Buzz"
- * [X] - 30 --> "FizzBuzz"
- * [X] - 1 --> "1"
- * 
- * new task
- * - 7,14 --> "Bang"
- * - 21 --> "FizzBang"
- * - 40 --> "BuzzBang"
- * - 105 --> "FizzBuzzBang"
- * 
- * new task
- * contains number --> 3 & 7 in 37
+ * Your task
+    - Write a program that prints one line for each number from 1 to 100
+    - Usually just print the number itself.
+    - For multiples of three print Fizz instead of the number
+    - For the multiples of five print Buzz instead of the number
+    - For numbers which are multiples of both three and five print FizzBuzz instead of the number
  */
 
-test("OneMatch", () => {
+/**
+ * [X] - 6,36 --> multiples of three print Fizz
+ * [X] - 25,50 - 0multiples of five print Buzz
+ * [X] - 15,30 - multiples of both three and five print FizzBuzz
+ * [X] - 1,23 - just print the number itself
+ */
+
+test("one-match", () => {
     const divisors = [
-        { div: 3, label: "Fizz" },
-        { div: 5, label: "Buzz" }
+        { div: 3, label: "Match" },
+        { div: 5, label: "Buzz" },
     ]
 
-    assert(transform(divisors, 6) === "Fizz")
-    assert(transform(divisors, 9) === "Fizz")
+    const num = 6
+
+    const result = trasform(divisors, num)
+
+    assert(result === "Match")
+
+    const num2 = 36
+
+    const result2 = trasform(divisors, num2)
+
+    assert(result2 === "Match")
 })
 
-test("MultipleMatch", () => {
+test("multiple-match", () => {
     const divisors = [
         { div: 3, label: "Fizz" },
         { div: 5, label: "Buzz" },
-        { div: 7, label: "Bang" }
+        { div: 7, label: "Bang" },
     ]
 
-    assert(transform(divisors, 30) === "FizzBuzz")
-    assert(transform(divisors, 60) === "FizzBuzz")
-    assert(transform(divisors, 105) === "FizzBuzzBang")
+    const num = 15
+
+    const result = trasform(divisors, num)
+
+    assert(result === "FizzBuzz")
+
+    const num2 = 30
+
+    const result2 = trasform(divisors, num2)
+
+    assert(result2 === "FizzBuzz")
 })
 
-test("NoMatch", () => {
+test("no-match", () => {
     const divisors = [
         { div: 3, label: "Fizz" },
-        { div: 5, label: "Buzz" }
+        { div: 5, label: "Buzz" },
     ]
 
-    assert(transform(divisors, 1) === "1")
-    assert(transform(divisors, 97) === "97")
+    const num = 1
+
+    const result = trasform(divisors, num)
+
+    assert(result === "1")
+
+    const num2 = 23
+
+    const result2 = trasform(divisors, num2)
+
+    assert(result2 === "23")
+})
+
+test("range-correctness", () => {
+    const divisors = [
+        { div: 3, label: "Fizz" },
+        { div: 5, label: "Buzz" },
+    ]
+    const rangeNumbers = 100
+    const trasformations = trasformNumbers(rangeNumbers, divisors)
+
+    assert(trasformations.length === 100)
+    assert(trasformations[14] === "FizzBuzz")
 })
