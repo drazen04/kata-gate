@@ -2,7 +2,7 @@ global using Xunit;
 
 public class Using
 {
-    public static string TransformMultiple(int mul, List<Divisor> divisors)
+    public static string Transform(int mul, List<Divisor> divisors)
     {
         var label = divisors
             .Where(divisor => IsMultipleOf(mul, divisor.div))
