@@ -4,20 +4,22 @@ public class Using
 {
     public static string FilterMultiple(int i)
     {
-        if (i % 3 == 0 && i % 5 == 0)
-        {
-            return "FizzBuzz";
-        }
-        if (i % 3 == 0)
-        {
-            return "Buzz";
-        }
+        Divisor divisor3 = new Divisor(3, "Buzz");
+        Divisor divisor5 = new Divisor(5, "Fizz");
         
-        if (i % 5 == 0)
+        var label = "";        
+        if (i % divisor5.div == 0)
         {
-            return "Fizz";
+            label = divisor5.label;
         }
-        
-        return i.ToString();
+
+        if (i % divisor3.div == 0)
+        {
+            label += divisor3.label;
+        }
+
+        return !String.IsNullOrEmpty(label) ? label : i.ToString();
     }
 }
+
+public record Divisor(int div, string label);
