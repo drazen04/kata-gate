@@ -1,4 +1,4 @@
-import { assert, test } from "vitest"
+import { assert, expect, test } from "vitest"
 import { arrayEq, optimalCombinations } from "./conf-wardrobe"
 
 /**
@@ -18,17 +18,20 @@ import { arrayEq, optimalCombinations } from "./conf-wardrobe"
 test("optimal-solution", () => {
     const elements = [50, 75, 100, 120]
     const targetSize = 250
+    const expectedCombiation = [50, 100, 100]
 
     const optCombinations = optimalCombinations(targetSize, elements)
-    assert(optCombinations[0] === 50)
-    assert(optCombinations[1] === 100)
-    assert(optCombinations[2] === 100)
-    assert(optCombinations.length === 3)
+    expect(arrayEq(expectedCombiation, optCombinations)).toBe(true)
 })
 
 test("array-deep-equality", () => {
     const elements1 = [1,2,3]
     const elements2 = [3,2,1]
 
-    assert(arrayEq(elements1, elements2)) 
+    expect(arrayEq(elements1, elements2)).toBe(true)
+
+    const elements3 = [1,2,3,5]
+    const elements4 = [3,2,1,4]
+
+    expect(arrayEq(elements3, elements4)).toBe(false) 
 })
