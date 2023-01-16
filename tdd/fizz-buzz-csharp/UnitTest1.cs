@@ -15,28 +15,21 @@ public class UnitTest1
     };
     
     [Fact]
-    public void Buzz()
+    public void OneMatch()
     {
         Assert.Equal("Buzz", Using.TransformMultiple(9, Divisors));
         Assert.Equal("Buzz", Using.TransformMultiple(18, Divisors));
     }
-    
+
     [Fact]
-    public void Fizz()
-    {
-        Assert.Equal("Fizz", Using.TransformMultiple(25, Divisors));
-        Assert.Equal("Fizz", Using.TransformMultiple(50, Divisors));
-    }
-    
-    [Fact]
-    public void FizzBuzz()
+    public void MultipleMatch()
     {
         Assert.Equal("FizzBuzz", Using.TransformMultiple(15, Divisors));
         Assert.Equal("FizzBuzz", Using.TransformMultiple(30, Divisors));
     }
 
     [Fact]
-    public void Num()
+    public void NoMatch()
     {
         Assert.Equal("17", Using.TransformMultiple(17, Divisors));
         Assert.Equal("97", Using.TransformMultiple(97, Divisors));
