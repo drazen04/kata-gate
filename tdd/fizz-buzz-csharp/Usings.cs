@@ -18,6 +18,6 @@ public class Using
             return "Fizz";
         }
         
-        return "";
+        return i.ToString();
     }
 }

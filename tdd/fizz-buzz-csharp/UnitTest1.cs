@@ -6,7 +6,7 @@ public class UnitTest1
      * - [X] 9,18 - "Buzz" case: n % 3 == 0
      * - [X] 25,50 - "Fizz" case: n % 5 == 0
      * - [X] 15,30 - "FizzBuzz" case: n % 3 && n % 5 == 0
-     * - [] 1,17,97 - "1", "17" ecc. for any other case
+     * - [X] 17,97 - "17", "97" ecc. for any other case
      */
     [Fact]
     public void Buzz()
@@ -27,5 +27,12 @@ public class UnitTest1
     {
         Assert.Equal("FizzBuzz", Using.FilterMultiple(15));
         Assert.Equal("FizzBuzz", Using.FilterMultiple(30));
+    }
+
+    [Fact]
+    public void Num()
+    {
+        Assert.Equal("17", Using.FilterMultiple(17));
+        Assert.Equal("97", Using.FilterMultiple(97));
     }
 }
