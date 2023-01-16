@@ -1,5 +1,5 @@
 import { assert, test } from "vitest"
-import { optimalSize } from "./conf-wardrobe"
+import { optimalCombinations } from "./conf-wardrobe"
 
 /**
  * Customize wardrobe by combining individual wardrobe elements.
@@ -19,9 +19,9 @@ test("bootstrap", () => {
     const elements = [50, 75, 100, 120]
     const targetSize = 250
 
-    const optCombination = optimalSize(targetSize, elements)
-    assert(optCombination[0] === 50)
-    assert(optCombination[1] === 100)
-    assert(optCombination[2] === 100)
-    assert(optCombination.length === 3)
+    const optCombinations = optimalCombinations(targetSize, elements)
+    assert(optCombinations[0] === 50)
+    assert(optCombinations[1] === 100)
+    assert(optCombinations[2] === 100)
+    assert(optCombinations.length === 3)
 })
