@@ -3,8 +3,9 @@ namespace fizz_buzz_csharp;
 public class UnitTest1
 {
     [Fact]
-    public void Test1()
+    public void Buzz()
     {
-        
+        var multiple3 = 9;
+        Assert.Equal("Buzz", Using.FilterMultiple(multiple3));
     }
 }
