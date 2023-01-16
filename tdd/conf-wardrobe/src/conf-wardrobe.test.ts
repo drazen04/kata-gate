@@ -1,5 +1,5 @@
 import { assert, test } from "vitest"
-import { optimalCombinations } from "./conf-wardrobe"
+import { arrayEq, optimalCombinations } from "./conf-wardrobe"
 
 /**
  * Customize wardrobe by combining individual wardrobe elements.
@@ -15,7 +15,7 @@ import { optimalCombinations } from "./conf-wardrobe"
  *
  */
 
-test("bootstrap", () => {
+test("optimal-solution", () => {
     const elements = [50, 75, 100, 120]
     const targetSize = 250
 
@@ -24,4 +24,11 @@ test("bootstrap", () => {
     assert(optCombinations[1] === 100)
     assert(optCombinations[2] === 100)
     assert(optCombinations.length === 3)
+})
+
+test("array-deep-equality", () => {
+    const elements1 = [1,2,3]
+    const elements2 = [3,2,1]
+
+    assert(arrayEq(elements1, elements2)) 
 })
