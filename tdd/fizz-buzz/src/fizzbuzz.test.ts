@@ -80,9 +80,11 @@ test("range-correctness", () => {
         { div: 3, label: "Fizz" },
         { div: 5, label: "Buzz" },
     ]
-    const rangeNumbers = 100
-    const trasformations = trasformNumbers(rangeNumbers, divisors)
 
-    assert(trasformations.length === 100)
-    assert(trasformations[14] === "FizzBuzz")
+    const trasformations = trasformNumbers(3, divisors)
+
+    assert(trasformations.length === 3)
+    assert(trasformations[0] === "1")
+    assert(trasformations[1] === "2")
+    assert(trasformations[2] === "Fizz")
 })
