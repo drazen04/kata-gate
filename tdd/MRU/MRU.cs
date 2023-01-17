@@ -20,14 +20,7 @@ public class MRU
         if (items.Contains(item)) return;
         if (items.Count != 0)
         {
-            /*var temp = items[0];
-            items[0] = item;
-            if (items.Count + 1 <= capacity)
-            {
-                items.Add(temp);
-            }*/
             AddAsHead(item);
-
         }
         else
         {

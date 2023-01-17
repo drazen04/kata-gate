@@ -14,6 +14,7 @@ public class MRUTest
      * - given MRU {} when readItems() then {}
      * - given MRU {} when addItems("foo") then readItems() -> {"foo"}
      * - given MRU {"foo", "bar"} when addItems("foo") then readItems() -> {"foo", "bar"}
+     * - given MRU {"bar", "foo"} when addItems("foo") then readItems() -> {"foo", "bar"}
      * - given MRU {"foo", "bar"} when addItems("buzz") then readItems() -> {"buzz", "foo", "bar"}
      * - given MRU {"buzz", "foo", "bar", ..., "twenty", "last"} when addItems("otherItem") then readItems() -> {"otherItems", "foo", "bar",... "twenty"}
      */
@@ -55,7 +56,23 @@ public class MRUTest
         Assert.Equal(1, mru.ReadItems().Count( x => x == "foo" ));
     }
     
-    
+    [Fact]
+    public void ExistingItemOnTop()
+    {
+        //- given MRU {"bar", "foo"} when addItems("foo") then readItems() -> {"foo", "bar"}
+        // Arrange
+        var mru = new MRU(6);
+        mru.AddItem("bar");
+        mru.AddItem("foo");
+        
+        // Act
+        mru.AddItem("foo");
+        
+        // Assert
+        Assert.Equal("foo", mru.ReadItems()[0]);
+    }
+
+
     [Fact]
     public void ItemIsOrdered()
     {
@@ -78,6 +95,7 @@ public class MRUTest
         var expected = new List<string>() { "buzz", "foo", "bar" };
         Assert.Equal(expected, mru.ReadItems());
         
+        // Arrange
         var mru2 = new MRU(6);
         mru2.AddItem("foo");
         
