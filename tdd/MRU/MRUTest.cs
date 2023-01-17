@@ -32,7 +32,7 @@ public class MRUTest
     public void AddItem()
     {
         var mru = new MRU(6);
-        mru.AddItem("foo");
+        mru.AddAsHead("foo");
         var result = mru.ReadItems();
             
         var expected = new List<string>() { "foo" };
@@ -46,11 +46,11 @@ public class MRUTest
         //- given MRU {"foo", "bar"} when addItems("foo") then readItems() -> {"foo", "bar"}
         // Arrange
         var mru = new MRU(6);
-        mru.AddItem("foo");
-        mru.AddItem("bar");
+        mru.AddAsHead("foo");
+        mru.AddAsHead("bar");
         
         // Act
-        mru.AddItem("foo");
+        mru.AddAsHead("foo");
         
         // Assert
         Assert.Equal(1, mru.ReadItems().Count( x => x == "foo" ));
@@ -62,11 +62,11 @@ public class MRUTest
         //- given MRU {"bar", "foo"} when addItems("foo") then readItems() -> {"foo", "bar"}
         // Arrange
         var mru = new MRU(6);
-        mru.AddItem("bar");
-        mru.AddItem("foo");
+        mru.AddAsHead("bar");
+        mru.AddAsHead("foo");
         
         // Act
-        mru.AddItem("foo");
+        mru.AddAsHead("foo");
         
         // Assert
         Assert.Equal("foo", mru.ReadItems()[0]);
@@ -79,32 +79,15 @@ public class MRUTest
         //- given MRU {"foo", "bar"} when addItems("buzz") then readItems() -> {"buzz", "foo", "bar"}
         // Arrange
         var mru = new MRU(6);
-        mru.AddItem("foo");
-        mru.AddItem("bar");
-        
+
         // Act
-        mru.AddItem("buzz");
-        
-        /**
-         * foo
-         * bar - foo
-         * buzz - foo - bar
-         */
-        
+        mru.AddAsHead("foo");
+        mru.AddAsHead("bar");
+        mru.AddAsHead("buzz");
+
         // Assert
-        var expected = new List<string>() { "buzz", "foo", "bar" };
+        var expected = new List<string>() { "buzz", "bar", "foo" };
         Assert.Equal(expected, mru.ReadItems());
-        
-        // Arrange
-        var mru2 = new MRU(6);
-        mru2.AddItem("foo");
-        
-        // Act
-        mru2.AddItem("bar");
-        
-        // Assert
-        var expected2 = new List<string>() { "bar", "foo" };
-        Assert.Equal(expected2, mru2.ReadItems());
     }
     
     [Fact]
@@ -116,19 +99,19 @@ public class MRUTest
         
         // Arrange
         var mru = new MRU(6);
-        mru.AddItem("buzz");
-        mru.AddItem("foo");
-        mru.AddItem("bar");
-        mru.AddItem("joy");
-        mru.AddItem("mark");
-        mru.AddItem("wesley");
+        mru.AddAsHead("buzz");
+        mru.AddAsHead("foo");
+        mru.AddAsHead("bar");
+        mru.AddAsHead("joy");
+        mru.AddAsHead("mark");
+        mru.AddAsHead("wesley");
         
         // Act
-        mru.AddItem("otherItem");
+        mru.AddAsHead("otherItem");
         
         // Assert
         Assert.Contains("otherItem", mru.ReadItems());
-        Assert.DoesNotContain("wesley", mru.ReadItems());
+        Assert.DoesNotContain("buzz", mru.ReadItems());
     }
     
 }
