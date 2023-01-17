@@ -90,7 +90,7 @@ public class MRUTest
     }
     
     [Fact]
-    public void Bla()
+    public void ExtraItem()
     {
         // given MRU {"buzz", "foo", "bar", ..., "twenty", "last"}
         // when addItems("otherItem")
