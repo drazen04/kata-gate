@@ -17,21 +17,31 @@ public class MRU
 
     public void AddItem(string item)
     {
-        if (!items.Contains(item))
+        if (items.Contains(item)) return;
+        if (items.Count != 0)
         {
-            if (items.Count != 0)
+            /*var temp = items[0];
+            items[0] = item;
+            if (items.Count + 1 <= capacity)
             {
-                var temp = items[0];
-                items[0] = item;
-                if (items.Count + 1 <= 6)
-                {
-                    items.Add(temp);
-                }
-            }
-            else
-            {
-                items.Add(item);
-            }
+                items.Add(temp);
+            }*/
+            AddAsHead(item);
+
+        }
+        else
+        {
+            items.Add(item);
+        }
+    }
+
+    private void AddAsHead(string item)
+    {
+        var temp = items[0];
+        items[0] = item;
+        if (items.Count + 1 <= capacity)
+        {
+            items.Add(temp);
         }
     }
 }
