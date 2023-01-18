@@ -35,11 +35,11 @@ public class TicTacToeTest
 
         var boardState = b.Print();
 
-        var expected = @"
+        var expected = Trim(@"
 ---
 ---
 ---
-";
+");
         Assert.Equal(expected, boardState);
     }
     
@@ -80,16 +80,15 @@ X--
     }
     
     [Fact]
-    public void Whoa()
+    public void WinnerFirstColumn()
     {
         // given b.fill([...]) when b.play({[0,0]}) then b.readBoard() => XXX  .O.  .O. END GAME, X IS WINNER
-        var b = new Board();
-
-        b.Play(0,0); // X
-        b.Play(1,1); // O
-        b.Play(0,1); // X
-        b.Play(2,1); // O
-        b.Play(0,2); // X
+        var b = Board.FromState(@"
+X--
+XOO
+---");
+        
+        b.Play(0,2);
         
         var boardState = b.Print();
 
@@ -98,6 +97,42 @@ X--
 XOO
 X--
 X Wins");
+        Assert.Equal(expected, boardState);
+    }
+    
+    [Fact]
+    public void WinnerLastColumn()
+    {
+        // given b.fill([...]) when b.play({[0,0]}) then b.readBoard() => XXX  .O.  .O. END GAME, X IS WINNER
+        var b = Board.FromState(@"
+--X
+OOX
+---");
+
+        b.Play(2,2);
+        
+        var boardState = b.Print();
+
+        var expected = Trim(@"
+--X
+OOX
+--X
+X Wins");
+        Assert.Equal(expected, boardState);
+    }
+    
+    [Fact]
+    public void BoardFromState()
+    {
+        var expected = Trim(@"
+--X
+OOX
+--X");
+        
+        var b = Board.FromState(expected);
+        
+        var boardState = b.Print();
+
         Assert.Equal(expected, boardState);
     }
 
