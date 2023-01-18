@@ -20,9 +20,10 @@ public class Board
         this.state = state.Trim(Environment.NewLine.ToCharArray());
     }
 
-    public static Board FromState(string state)
+    public static Board FromState(string state, char nextPlayer)
     {
         var board = new Board(state);
+        board.currentPlayer = nextPlayer;
         return board;
     }
 
@@ -53,6 +54,29 @@ public class Board
         return  state.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
     }
 
+    private Boolean CheckColumns()
+    {
+        var first = CheckVertical(0);
+        var second = CheckVertical(1);
+        var third = CheckVertical(2);
+        return first || second || third;
+    }
+    
+    private Boolean CheckRows()
+    {
+        var first = CheckRow(0);
+        var second = CheckRow(1);
+        var third = CheckRow(2);
+        return first || second || third;
+    }
+    
+    private Boolean CheckVertical()
+    {
+        var rows = GetRows();
+        return Enumerable.Range(0, 3).Select(i => rows[i][i]).All(x => x == currentPlayer)
+            || Enumerable.Range(0, 3).Select(i => rows[i][2 - i]).All(x => x == currentPlayer);
+    }
+
     private void SwitchPlayer()
     {
         currentPlayer = currentPlayer == 'X' ? 'O' : 'X';
@@ -65,27 +89,28 @@ public class Board
             .GroupBy( x => x)
             // 2 [ key: 'X', count: 3, key: 'O', cunt: 2 ]
             .Any( x => x.Count() == 3);*/
-        var checkEquals = CheckColumns();
+        var checkColumns = CheckColumns();
+        var checkRows = CheckRows();
+        var checkVertical = CheckVertical();
         //if (rows[0][0] == rows[1][0] && rows[1][0] == rows[2][0])
-        if(checkEquals)
+        if(checkColumns || checkRows || checkVertical)
         {
             state += Environment.NewLine + currentPlayer + " Wins";
         }
     }
-
-    private Boolean CheckColumns()
-    {
-        var first = CheckVertical(0);
-        var second = CheckVertical(1);
-        var third = CheckVertical(2);
-        return first || second || third;
-    }
-
-
+    
     private bool CheckVertical(int column)
     {
         var checkEquals = GetRows()
             .Select(row => row[column])
+            .All(x => x == currentPlayer);
+        return checkEquals;
+    }
+    
+    private bool CheckRow(int row)
+    {
+        var checkEquals = GetRows()[row].ToCharArray()
+            .Select(column => column)
             .All(x => x == currentPlayer);
         return checkEquals;
     }

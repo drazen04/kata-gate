@@ -34,7 +34,7 @@ public class TicTacToeTest
         var b = new Board();
 
         var boardState = b.Print();
-
+// 0,2 - 1,1 - 2,0
         var expected = Trim(@"
 ---
 ---
@@ -86,7 +86,7 @@ X--
         var b = Board.FromState(@"
 X--
 XOO
----");
+---", 'X');
         
         b.Play(0,2);
         
@@ -107,7 +107,7 @@ X Wins");
         var b = Board.FromState(@"
 --X
 OOX
----");
+---", 'X');
 
         b.Play(2,2);
         
@@ -120,18 +120,48 @@ OOX
 X Wins");
         Assert.Equal(expected, boardState);
     }
-    
+
     [Fact]
-    public void BoardFromState()
+    public void WinnerFirstRow()
     {
-        var expected = Trim(@"
---X
-OOX
---X");
+        var initialState = Trim(@"
+OO-
+X-X
+---");
         
-        var b = Board.FromState(expected);
+        var b = Board.FromState(initialState, 'O');
+        b.Play(2, 0);
         
         var boardState = b.Print();
+        
+        var expected = Trim(@"
+OOO
+X-X
+---
+O Wins");
+
+        Assert.Equal(expected, boardState);
+    }
+
+    
+    [Fact]
+    public void WinnerDiagonal()
+    {
+        var initialState = Trim(@"
+--O
+XOX
+---");
+        
+        var b = Board.FromState(initialState, 'O');
+        b.Play(0, 2);
+        
+        var boardState = b.Print();
+        
+        var expected = Trim(@"
+--O
+XOX
+O--
+O Wins");
 
         Assert.Equal(expected, boardState);
     }
