@@ -1,0 +1,21 @@
+{
+  "name": "tic-tac-toe",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsc && node src/index.js",
+    "test": "npx vitest run src/tic-tac-toe.test.ts",
+    "test-watch": "npx vitest watch src/tic-tac-toe.test.ts",
+    "dev": "tsc --watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "typescript": "^4.9.4",
+    "vitest": "^0.27.2"
+  },
+  "devDependencies": {
+    "@tsconfig/node16": "^1.0.3"
+  }
+}
