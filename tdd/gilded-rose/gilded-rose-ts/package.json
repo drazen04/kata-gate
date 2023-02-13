@@ -1,0 +1,22 @@
+{
+  "name": "gilded-rose-ts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsc && node src/index.js",
+    "test": "npx vitest run src/gilded-rose-ts.test.ts",
+    "testw": "npx vitest watch src/gilded-rose-ts.test.ts",
+    "dev": "tsc --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "typescript": "^4.9.5",
+    "vitest": "^0.28.5"
+  },
+  "devDependencies": {
+    "@tsconfig/node18": "^1.0.1"
+  }
+}
