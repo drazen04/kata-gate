@@ -1,5 +1,5 @@
 import { expect, describe, it, test } from "vitest"
-import { Item, arrange, ARRANGE_ITEM_UNIT, doubleIt } from "./domain"
+import { Item, ARRANGE_ITEM_UNIT, doubleIt, arrange } from "./domain"
 
 // Gilded-Rose
 // System
@@ -65,43 +65,44 @@ it("should not decrease quality anymore if quality is 0", () => {
     expect(itemResult.quality).toBe(0)
 })
 
-it("should decrease quality 2x faster if sellDate expired", () => {
+it("faster decrease", () => {
+    const outdatedSellIn = 0
     const item: Item = {
-        name: "Salmon",
-        quality: 12,
-        sellIn: 0,
-    }
-
-    const itemResult = arrange(item)
-
-    expect(itemResult.quality).toBe(item.quality - doubleIt(ARRANGE_ITEM_UNIT))
-})
-
-it("should increase quality if name == 'Aged Brie'", () => {
-    const item: Item = {
-        name: "Aged Brie",
-        quality: 12,
-        sellIn: 0,
-    }
-
-    const itemResult = arrange(item)
-
-    expect(itemResult.quality).toBe(12 + ARRANGE_ITEM_UNIT)
-})
-
-it("should not increase quality if quality == 50", () => {
-    const item: Item = {
-        name: "Aged Brie",
+        name: "SalmonX",
         quality: 50,
+        sellIn: outdatedSellIn,
+    }
+
+    const itemResult = arrange(item)
+
+    expect(itemResult.quality).toBe(qualityTestExpectedOnDecrease(item.quality - doubleIt(ARRANGE_ITEM_UNIT)))
+})
+
+it("quality increase", () => {
+    const item: Item = {
+        name: "Aged Brie",
+        quality: 24,
         sellIn: 0,
     }
 
     const itemResult = arrange(item)
 
-    expect(itemResult.quality).toBe(50)
+    expect(itemResult.quality).toBe(qualityTestExpectedOnIncrease(item.quality + ARRANGE_ITEM_UNIT))
 })
 
-it("should not decrease quality if name == 'Sulfuras'", () => {
+test("quality not exceeded", () => {
+    const item: Item = {
+        name: "Aged Brie",
+        quality: 23,
+        sellIn: 0,
+    }
+
+    const itemResult = arrange(item)
+
+    expect(itemResult.quality).toBe(qualityTestExpectedOnIncrease(item.quality + ARRANGE_ITEM_UNIT))
+})
+
+test("quality remain the same", () => {
     const sameQuality = 23
     const item: Item = {
         name: "Sulfuras",
@@ -115,7 +116,7 @@ it("should not decrease quality if name == 'Sulfuras'", () => {
 })
 
 describe("Backstage pass", () => {
-    it("should set quality = 0 if sellIn == 0 (concert is done)", () => {
+    it("should have no quality when concert is done", () => {
         const item: Item = {
             name: "Backstage pass",
             quality: 23,
@@ -127,7 +128,7 @@ describe("Backstage pass", () => {
         expect(itemResult.quality).toBe(0)
     })
 
-    it("should increase twice if sellIn > 5 && sellIn <= 10", () => {
+    it("should increase if normal sellIn value", () => {
         const item: Item = {
             name: "Backstage pass",
             quality: 23,
@@ -136,10 +137,10 @@ describe("Backstage pass", () => {
 
         const itemResult = arrange(item)
 
-        expect(itemResult.quality).toBe(item.quality + doubleIt(ARRANGE_ITEM_UNIT))
+        expect(itemResult.quality).toBe(qualityTestExpectedOnIncrease(item.quality + doubleIt(ARRANGE_ITEM_UNIT)))
     })
 
-    it("should increase 3x if sellIn <= 5 ", () => {
+    it("should increase if lowest sellin value", () => {
         const item: Item = {
             name: "Backstage pass",
             quality: 23,
@@ -148,7 +149,7 @@ describe("Backstage pass", () => {
 
         const itemResult = arrange(item)
 
-        expect(itemResult.quality).toBe(item.quality + 3 * ARRANGE_ITEM_UNIT)
+        expect(itemResult.quality).toBe(qualityTestExpectedOnIncrease(item.quality + 3 * ARRANGE_ITEM_UNIT))
     })
 })
 
@@ -163,3 +164,11 @@ it("should decrease twice quality if name == 'Conjured'", () => {
 
     expect(itemResult.quality).toBe(item.quality - doubleIt(ARRANGE_ITEM_UNIT))
 })
+
+function qualityTestExpectedOnDecrease(quality: number) {
+    return quality <= 0 ? 0 : quality
+}
+
+function qualityTestExpectedOnIncrease(quality: number) {
+    return quality >= 50 ? 50 : quality
+}
