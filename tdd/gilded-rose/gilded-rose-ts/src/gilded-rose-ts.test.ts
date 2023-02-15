@@ -1,4 +1,5 @@
 import { expect, describe, it, test } from "vitest"
+import { Item, arrange, ARRANGE_ITEM_UNIT, doubleIt } from "./domain"
 
 // Gilded-Rose
 // System
@@ -32,26 +33,12 @@ import { expect, describe, it, test } from "vitest"
  * [x] - given item.quality = 50 when quality increase then item.quality = 50
  * [x] - given "Sulfuras" when day ends then arrange(item.quality) = item.quality
  * [x] - given "Backstage pass" when concert is done then item.quality = 0
- * [x] - given "Backstage pass" when there are 10 days or less then item.quality = increaseQualityByTwo(item)
+ * [x] - given "Backstage pass" when there are 10 days or less then item.quality = increaseQualityTwice(item)
  * [x] - given "Backstage pass" when there are 5 days or less then item.quality = increaseQualityByThree(item)
+ * [x] - given "Conjured" when arrange(item) then item.quality = decreaseQualtyTwice(item)
  * [] - when the day ends then arrange(item.sellIn) < item.sellIn
  * [] - when the day ends then arrange(item.quality) < item.quality
  */
-
-type Quality = number
-type SellIn = number
-
-type SpecialCase = "Aged Brie" | "Sulfuras" | "Backstage pass"
-
-type Item = {
-    name: string
-    quality: Quality
-    sellIn: SellIn
-}
-
-type ItemNumberKeys = keyof Omit<Item, "name">
-
-const degradation = 1
 
 it("should decrease quality and sellin", () => {
     const item: Item = {
@@ -62,8 +49,8 @@ it("should decrease quality and sellin", () => {
 
     const itemResult = arrange(item)
 
-    expect(itemResult.quality).toBe(9)
-    expect(itemResult.sellIn).toBe(10)
+    expect(itemResult.quality).toBe(item.quality - ARRANGE_ITEM_UNIT)
+    expect(itemResult.sellIn).toBe(item.sellIn - ARRANGE_ITEM_UNIT)
 })
 
 it("should not decrease quality anymore if quality is 0", () => {
@@ -87,19 +74,7 @@ it("should decrease quality 2x faster if sellDate expired", () => {
 
     const itemResult = arrange(item)
 
-    expect(itemResult.quality).toBe(10)
-})
-
-it("should not decrease quality 2x faster if sellDate expired", () => {
-    const item: Item = {
-        name: "Salmon",
-        quality: 12,
-        sellIn: 0,
-    }
-
-    const itemResult = arrange(item)
-
-    expect(itemResult.quality).toBe(10)
+    expect(itemResult.quality).toBe(item.quality - doubleIt(ARRANGE_ITEM_UNIT))
 })
 
 it("should increase quality if name == 'Aged Brie'", () => {
@@ -111,7 +86,7 @@ it("should increase quality if name == 'Aged Brie'", () => {
 
     const itemResult = arrange(item)
 
-    expect(itemResult.quality).toBe(13)
+    expect(itemResult.quality).toBe(12 + ARRANGE_ITEM_UNIT)
 })
 
 it("should not increase quality if quality == 50", () => {
@@ -127,15 +102,16 @@ it("should not increase quality if quality == 50", () => {
 })
 
 it("should not decrease quality if name == 'Sulfuras'", () => {
+    const sameQuality = 23
     const item: Item = {
         name: "Sulfuras",
-        quality: 23,
+        quality: sameQuality,
         sellIn: 0,
     }
 
     const itemResult = arrange(item)
 
-    expect(itemResult.quality).toBe(23)
+    expect(itemResult.quality).toBe(sameQuality)
 })
 
 describe("Backstage pass", () => {
@@ -160,7 +136,7 @@ describe("Backstage pass", () => {
 
         const itemResult = arrange(item)
 
-        expect(itemResult.quality).toBe(25)
+        expect(itemResult.quality).toBe(item.quality + doubleIt(ARRANGE_ITEM_UNIT))
     })
 
     it("should increase 3x if sellIn <= 5 ", () => {
@@ -172,82 +148,18 @@ describe("Backstage pass", () => {
 
         const itemResult = arrange(item)
 
-        expect(itemResult.quality).toBe(26)
+        expect(itemResult.quality).toBe(item.quality + 3 * ARRANGE_ITEM_UNIT)
     })
 })
 
-const isAgedBrie = (item: Item) => item.name === "Aged Brie"
-const isSulfuras = (item: Item) => item.name === "Sulfuras"
-const isSellDateExpired = (item: Item) => item.sellIn === 0
-const hasNoMoreQuality = (item: Item) => item.quality === 0
-
-const sameQuality = (item: Item) => item.quality
-
-const increase = (prop: ItemNumberKeys) => (num: number) => (item: Item) => item[prop] + num
-const decrease = (prop: ItemNumberKeys) => (num: number) => (item: Item) => item[prop] - num
-
-const increaseQualityBy = increase("quality")
-const increaseQualityByOne = increaseQualityBy(1)
-const increaseQualityByTwo = increaseQualityBy(2)
-const increaseQualityByThree = increaseQualityBy(3)
-
-const decreaseSellInBy = decrease("sellIn")
-const decreaseSellInByOne = decreaseSellInBy(1)
-
-const decreaseQualityBy = decrease("quality")
-const decreaseQualityByOne = decreaseQualityBy(1)
-const decreaseQualityByTwo = decreaseQualityBy(2)
-
-function arrange(item: Item): Item {
-    return {
-        name: item.name,
-        quality: calculateQualityT(item),
-        sellIn: decreaseSellInByOne(item),
+it("should decrease twice quality if name == 'Conjured'", () => {
+    const item: Item = {
+        name: "Conjured",
+        quality: 23,
+        sellIn: 0,
     }
-}
 
-function calculateQualityT(item: Item): number {
-    switch (item.name) {
-        case "Aged Brie":
-            return calculateQualityA(item)
-        case "Sulfuras":
-            return calculateQualityS(item)
-        case "Backstage pass":
-            return calculateQualityB(item)
-        default:
-            return calculateDefault(item)
-    }
-}
+    const itemResult = arrange(item)
 
-function calculateQualityA(item: Item): number {
-    if (item.quality > 0 && item.quality < 50) {
-        return increaseQualityByOne(item)
-    }
-    return item.quality
-}
-
-function calculateQualityS(item: Item) {
-    if (item.quality > 0 && item.quality < 50) {
-        return sameQuality(item)
-    }
-    return item.quality
-}
-
-function calculateQualityB(item: Item) {
-    if (item.quality > 0 && item.quality < 50) {
-        if (item.sellIn === 0) return 0
-        return item.sellIn > 5 && 5 <= 10
-            ? increaseQualityByTwo(item)
-            : item.sellIn <= 5
-            ? increaseQualityByThree(item)
-            : increaseQualityByOne(item)
-    }
-    return item.quality
-}
-
-function calculateDefault(item: Item) {
-    if (item.quality > 0 && item.quality < 50) {
-        return isSellDateExpired(item) ? decreaseQualityByTwo(item) : decreaseQualityByOne(item)
-    }
-    return sameQuality(item)
-}
+    expect(itemResult.quality).toBe(item.quality - doubleIt(ARRANGE_ITEM_UNIT))
+})
