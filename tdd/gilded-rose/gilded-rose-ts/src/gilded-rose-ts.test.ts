@@ -1,5 +1,6 @@
 import { expect, describe, it, test } from "vitest"
-import { Item, ARRANGE_ITEM_UNIT, doubleIt, arrange } from "./domain"
+import { doubleIt } from "./domain/calculation"
+import { Item, ARRANGE_ITEM_UNIT, arrange } from "./domain/core"
 
 // Gilded-Rose
 // System

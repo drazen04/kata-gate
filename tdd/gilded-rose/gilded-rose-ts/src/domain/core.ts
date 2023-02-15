@@ -1,3 +1,14 @@
+import {
+    decreaseQualityByUnit,
+    decreaseQualityTwice,
+    decreaseSellInByUnit,
+    increaseQualityByUnit,
+    increaseQualityTriple,
+    increaseQualityTwice,
+    isSellDateExpired,
+    sameQuality,
+} from "./calculation"
+
 export const ARRANGE_ITEM_UNIT = 10
 
 interface ItemInterface {
@@ -91,7 +102,7 @@ export type Item = {
 type Quality = number
 type SellIn = number
 
-type ItemNumberKeys = keyof Omit<Item, "name">
+export type ItemNumberKeys = keyof Omit<Item, "name">
 
 export function arrange(item: Item): Item {
     switch (item.name) {
@@ -116,27 +127,3 @@ function _with(f: (_: Item) => number, increase: boolean = false): (_: Item) => 
         return qualityUpdated
     }
 }
-
-const isSellDateExpired = (item: Item) => item.sellIn === 0
-
-const sameQuality = (item: Item) => item.quality
-
-const increase = (prop: ItemNumberKeys) => (num: number) => (item: Item) => item[prop] + num
-const decrease = (prop: ItemNumberKeys) => (num: number) => (item: Item) => item[prop] - num
-
-export const doubleIt = (num: number) => num * 2
-export const tripleIt = (num: number) => num * 3
-
-const increaseQualityBy = increase("quality")
-const increaseQualityByUnit = increaseQualityBy(ARRANGE_ITEM_UNIT)
-const increaseQualityTwice = increaseQualityBy(doubleIt(ARRANGE_ITEM_UNIT))
-const increaseQualityTriple = increaseQualityBy(tripleIt(ARRANGE_ITEM_UNIT))
-
-const decreaseSellInBy = decrease("sellIn")
-const decreaseSellInByUnit = decreaseSellInBy(ARRANGE_ITEM_UNIT)
-
-const decreaseQualityBy = decrease("quality")
-const decreaseQualityByUnit = decreaseQualityBy(ARRANGE_ITEM_UNIT)
-const decreaseQualityTwice = decreaseQualityBy(doubleIt(ARRANGE_ITEM_UNIT))
-
-const rangeOf = (numToCheck: number) => (start: number, end: number) => numToCheck > start && numToCheck < end
